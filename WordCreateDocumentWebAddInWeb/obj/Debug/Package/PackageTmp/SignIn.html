@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Microsoft Graph Connect sample</title>
+    <base href="/">
+
+
+    <script src="Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="Scripts/FabricUI/MessageBanner.js" type="text/javascript"></script>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+
+    <!-- For the Office UI Fabric, go to http://aka.ms/office-ui-fabric to learn more. -->
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.min.css">
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css">
+
+    <!-- Third party dependencies. -->
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.css">
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.components.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.css">
+
+    <!-- App code. -->
+    <script src="Scripts/hello.js"></script>
+    <script src="Scripts/config.js"></script>
+    <script src="Scripts/app.js"></script>
+    <script src="Scripts/aad.js"></script>
+    <script src="Scripts/graphHelper.js"></script>
+    <script src="Scripts/mainController.js"></script>
+    <script src="Scripts/DialogHelper.js"></script>
+    <link rel="stylesheet" href="styles.css">
+
+    <script>
+        Office.initialize = function (reason) {
+            //If you need to initialize something you can do so here.
+        }
+
+        function messageParent(text) {
+            /* Only strings, booleans and numbers can be sent across.
+            JS Objects cannot be messaged across */
+            Office.context.ui.messageParent(text);
+        }
+    </script>
+</head>
+
+<body class="ms-Grid">
+    <div ng-controller="MainController as main">
+        <div class="ms-Grid-row">
+            <!-- App navigation bar markup. -->
+            <div class="ms-NavBar">
+                <ul class="ms-NavBar-items">
+                    <li class="navbar-header">Connect to Microsoft Graph</li>
+                    <li class="ms-NavBar-item ms-NavBar-item--right" ng-show="main.isAuthenticated()" ng-click="main.logout()"><i class="ms-Icon ms-Icon--x"></i> Disconnect</li>
+                    <li class="ms-NavBar-item ms-NavBar-item--right" ng-click="main.close()"><i class="ms-Icon ms-Icon--x"></i> Close</li>
+                 </ul>
+            </div>
+
+            <!-- App main content markup. -->
+            <div class="ms-Grid-col ms-u-mdPush1 ms-u-md9 ms-u-lgPush1 ms-u-lg6">
+                <div ng-hide="main.isAuthenticated()">
+                    <p class="ms-font-xl">Use the button below to connect to Microsoft Graph.</p>
+                    <button class="ms-Button" ng-click="main.login()">
+                        <span class="ms-Button-label">Connect</span>
+                    </button>
+                </div>
+                <div ng-show="main.isAuthenticated()">
+                    <h2 class="ms-font-xxl ms-fontWeight-semibold">Hi, {{ main.displayName }}!</h2>
+                    <p class="ms-font-xl">You're now connected to Microsoft Graph. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+
+
+
+

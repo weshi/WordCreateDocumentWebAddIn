@@ -1,0 +1,2 @@
+bin\Debug\app.publish\OfficeAppManifests\WordCreateDocumentWebAddInManifest.xml
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddIn\bin\Debug\app.publish\WordCreateDocumentWebAddIn.app

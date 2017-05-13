@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Published:920014D5-5E5A-442D-934A-437E4FB0A4DA-->
+<App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest" Name="WordCreateDocumentWebAddIn" ProductID="{87ca773a-747a-48c6-a731-e1bc59b4eebc}" Version="1.0.0.0" SharePointMinVersion="15.0.0.0">
+  <Properties>
+    <Title>WordCreateDocumentWebAddIn</Title>
+    <StartPage>http://go.microsoft.com/fwlink/?LinkID=278993</StartPage>
+  </Properties>
+  <AppPrincipal>
+    <Internal />
+  </AppPrincipal>
+</App>

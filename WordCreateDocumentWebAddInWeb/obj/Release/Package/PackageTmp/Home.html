@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Create Document App</title>
+
+    <script src="Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="Scripts/FabricUI/MessageBanner.js" type="text/javascript"></script>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+
+    <!-- For the Office UI Fabric, go to http://aka.ms/office-ui-fabric to learn more. -->
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.min.css">
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css">
+
+    <!-- Third party dependencies. -->
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.css">
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.components.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.css">
+
+    <!-- App code. -->
+    <script src="Scripts/hello.js"></script>
+    <script src="Scripts/config.js"></script>
+    <script src="Scripts/app.js"></script>
+    <script src="Scripts/aad.js"></script>
+    <script src="Scripts/graphHelper.js"></script>
+    <script src="Scripts/mainController.js"></script>
+    <script src="Scripts/es6-promise.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link href="Home.css" rel="stylesheet" type="text/css" />
+
+    <script>
+        // The initialize function must be run each time a new page is loaded.
+        Office.initialize = function (reason) {
+            $(document).ready(function () {
+                // Initialize the FabricUI notification mechanism and hide it
+                var element = document.querySelector('.ms-MessageBanner');
+                messageBanner = new fabric.MessageBanner(element);
+                messageBanner.hideBanner();
+
+                $('#logIn-text').text("Sign In");
+                $('#logIn-desc').text("Sign In to Office365");
+                $('#logOut-text').text("Disconnect");
+                $('#logOut-desc').text("Disconnect from Office365");
+
+
+                $('#sendMail-text').text("Send Mail");
+                $('#sendMail-desc').text("Send mail from your account");
+                $('#uploadFile-text').text("Upload File");
+                $('#uploadFile-desc').text("Upload File to your OneDrive folder");
+                $('#clearFile-text').text("Clear");
+                $('#clearFile-desc').text("Clear the input");
+                $('#exploreGraph-text').text("Explore Graph");
+                $('#exploreGraph-desc').text("Explore Graph API for Office365");
+            });
+        };
+    </script>
+</head>
+
+<body>
+    <div id="content-main" ng-controller="MainController as main" class="padding">
+        <!-- Sign In -->
+        <div id="sign-in" class="ms-Grid-row">
+            <div ng-hide="main.isAuthenticated()">
+                <button class="ms-Button ms-Button--primary" id="logIn-button" ng-click="main.openDialog()">
+                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                    <span class="ms-Button-label" id="logIn-text"></span>
+                    <span class="ms-Button-description" id="logIn-desc"></span>
+                </button>
+                <p class="ms-font-s">Sign in to Microsoft Graph.</p>
+            </div>
+            <div ng-show="main.isAuthenticated()">
+                <button class="ms-Button ms-Button--primary" id="logOut-button" ng-click="main.logout()">
+                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                    <span class="ms-Button-label" id="logOut-text"></span>
+                    <span class="ms-Button-description" id="logOut-desc"></span>
+                </button>
+                <p class="ms-font-s">Disconnect from Microsoft Graph.</p>
+            </div>
+        </div>
+
+        <!-- Main Part -->
+        <div id="main-part" class="ms-Grid-row">
+            <!-- Send Mail -->
+            <div ng-show="main.isAuthenticated()">
+                <h2 class="ms-font-xl ms-fontWeight-semibold">Hi, {{ main.displayName }}!</h2>
+                <p class="ms-font-l">You're now connected to Microsoft Graph.</p>
+
+                <p class="ms-font-m">Click the button below to send a message from your account using the Microsoft Graph API. </p>
+                <div class="ms-TextField">
+                    <input ng-model="main.emailAddress" class="ms-TextField-field">
+                </div>
+
+                <button class="ms-Button ms-Button--primary" ng-click="main.sendMail()">
+                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                    <span class="ms-Button-label" id="sendMail-text"></span>
+                    <span class="ms-Button-description" id="sendMail-desc"></span>
+                </button>
+
+                <div ng-show="main.sendMailSuccess && main.sendMailFinished">
+                    <p class="ms-font-m ms-fontColor-green">Successfully sent an email to {{ main.emailAddressSent }}!</p>
+                </div>
+                <div ng-show="!main.sendMailSuccess && main.sendMailFinished">
+                    <p class="ms-font-m ms-fontColor-redDark">Something went wrong, couldn't send an email.</p>
+                </div>
+            </div>
+
+            <!-- Upload File -->
+            <div ng-show="main.isAuthenticated()">
+                <p class="ms-font-m">Click the button below to upload file to your OneDrive folder using the Microsoft Graph API. </p>
+
+                <input type="file" id="inputFile" file-change="main.upload()" ng-model="main.file"><br /><br />
+                <button class="ms-Button ms-Button--primary" ng-click="main.uploadFile()">
+                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                    <span class="ms-Button-label" id="uploadFile-text"></span>
+                    <span class="ms-Button-description" id="uploadFile-desc"></span>
+                </button>
+                <button class="ms-Button ms-Button--primary" ng-click="main.clearFile()">
+                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                    <span class="ms-Button-label" id="clearFile-text"></span>
+                    <span class="ms-Button-description" id="clearFile-desc"></span>
+                </button>
+
+                <div ng-show="main.uploadFileSuccess && main.uploadFileFinished">
+                    <p class="ms-font-m ms-fontColor-green">Successfully uploaded file {{ main.myFile }}!</p>
+                </div>
+                <div ng-show="!main.uploadFileSuccess && main.uploadFileFinished">
+                    <p class="ms-font-m ms-fontColor-redDark">Something went wrong, couldn't upload file {{ main.myFile }}.</p>
+                </div>
+            </div>
+
+            <!-- Explore Graph -->
+            <div ng-show="main.isAuthenticated()">
+                <p class="ms-font-m">Click the button below to explore Microsoft Graph from your account using the Microsoft Graph API. </p>
+                <div class="ms-TextField">
+                    <label class="ms-Label">URL</label>
+                    <input ng-model="main.graphUrl" class="ms-TextField-field" type="text" value="" placeholder="">
+                </div>
+                <div class="ms-TextField ms-TextField--multiline">
+                    <label class="ms-Label">Body</label>
+                    <textarea ng-model="main.graphBody" class="ms-TextField-field"></textarea>
+                </div>
+
+                <button class="ms-Button ms-Button--primary" ng-click="main.exploreGraph()">
+                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                    <span class="ms-Button-label" id="exploreGraph-text"></span>
+                    <span class="ms-Button-description" id="exploreGraph-desc"></span>
+                </button>
+
+                <div ng-show="main.exploreGraphSuccess && main.exploreGraphFinished">
+                    <p class="ms-font-m ms-fontColor-green">Successfully sent an request to Graph!</p>
+                </div>
+                <div ng-show="!main.exploreGraphSuccess && main.exploreGraphFinished">
+                    <p class="ms-font-m ms-fontColor-redDark">Something went wrong, couldn't send an graph request.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer" class="footer">
+            <div class="ms-Grid ms-bgColor-themeSecondary">
+                <div class="ms-Grid-row">
+                    <div class="ms-Grid-col ms-u-sm12 ms-u-md12 ms-u-lg12">
+                        <div class="ms-font-xl ms-fontColor-white">Contoso</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FabricUI component used for displaying notifications -->
+        <div class="ms-MessageBanner" style="position: absolute; bottom: 0;">
+            <div class="ms-MessageBanner-content">
+                <div class="ms-MessageBanner-text">
+                    <div class="ms-MessageBanner-clipper">
+                        <div class="ms-font-m-plus ms-fontWeight-semibold" id="notificationHeader"></div>
+                        <div class="ms-font-m ms-fontWeight-semilight" id="notificationBody"></div>
+                    </div>
+                </div>
+                <button class="ms-MessageBanner-expand" style="display: none"><i class="ms-Icon ms-Icon--chevronsDown"></i> </button>
+                <div class="ms-MessageBanner-action"></div>
+            </div>
+            <button class="ms-MessageBanner-close"> <i class="ms-Icon ms-Icon--x"></i> </button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\csc.exe
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\vbc.exe
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\VBCSCompiler.exe
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\obj\Release\WordCreateDocumentWebAddInWeb.csprojResolveAssemblyReference.cache
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\Create Document App.dll.config
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\Create Document App.dll
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\bin\Create Document App.pdb
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\obj\Release\Create Document App.dll
+C:\Users\weshi\projects\WordCreateDocumentWebAddIn\WordCreateDocumentWebAddInWeb\obj\Release\Create Document App.pdb
