@@ -37,8 +37,8 @@
         };
     }
 
-    function MainController($http, $log, GraphHelper) {
-        let vm = this;
+    function MainController($http, $log, $scope, GraphHelper) {
+        var vm = this;
 
         // View model properties
         vm.displayName;
@@ -56,6 +56,7 @@
         vm.file;
         vm.fileName;
         vm.fileContent;
+        vm.webUrl;
         vm.dialog;
 
         // View model methods
@@ -72,6 +73,7 @@
         vm.base64ToArrayBuffer = base64ToArrayBuffer;
         vm.clearFile = clearFile;
         vm.upload = upload;
+        vm.openFile = openFile;
 
         /////////////////////////////////////////
         // End of exposed properties and methods.
@@ -129,7 +131,6 @@
         vm.initAuth();
 
         function isAuthenticated() {
-            console.log("user: " + localStorage.getItem('user'));
             return localStorage.getItem('user') !== null;
         }
 
@@ -220,7 +221,6 @@
 
         // Upload a file on behalf of the current user.
         function uploadFile() {
-
             // Check token expiry. If the token is valid for another 5 minutes, we'll use it.
             let auth = angular.fromJson(localStorage.auth);
             let expiration = new Date();
@@ -230,27 +230,36 @@
                 if ((typeof vm.fileName == 'undefined') || (typeof vm.fileContent == 'undefined') || vm.fileName.length === 0) {
                     vm.fileName = "test.docx";
                     vm.fileContent = base64ToArrayBuffer(getBase64());
-                    console.log("Warning: ", "No file selected. Uploading default file.");
                 }
                 GraphHelper.uploadFile(vm.fileName, vm.fileContent)
                     .then(function (response) {
-                        var jsonResponse = JSON.parse(response);
-                        var webUrl = jsonResponse["webUrl"];
-                        console.log("Success", "HTTP request to the Microsoft Graph API returned successfully. WebUrl: " + webUrl);
-                        Office.context.ui.displayDialogAsync(webUrl, { height: 60, width: 50, displayInIframe: false }, null);
-                        vm.uploadFileSuccess = true;
+                        console.log('HTTP request to the Microsoft Graph API returned successfully.');
+                        console.log('Response: ' + JSON.stringify(response));
+
+                        var data = JSON.parse(response.data);
+                        vm.webUrl = data["webUrl"];
+                        response.status === 200 ? vm.uploadFileSuccess = true : vm.uploadFileSuccess = false;
                         vm.uploadFileFinished = true;
+                        console.log("Upload File Finished: " + vm.uploadFileFinished + " Success: " + vm.uploadFileSuccess);
+                        $scope.$apply();
                     }, function (error) {
                         console.log('HTTP request to the Microsoft Graph API failed.');
                         vm.uploadFileSuccess = false;
                         vm.uploadFileFinished = true;
+                        console.log("Upload File Finished: " + vm.uploadFileFinished + " Success: " + vm.uploadFileSuccess);
+                        $scope.$apply();
                     });
-
             }
             else {
                 // If the token is expired, this sample just redirects the user to sign in.
                 GraphHelper.login();
             }
+        }
+
+        // Open the uploaded file.
+        function openFile() {
+            console.log("Trying to open the file " + vm.webUrl);
+            window.open(vm.webUrl, "_blank");
         }
 
         // Send a graph request on behalf of the current user.
@@ -310,6 +319,7 @@
             vm.fileContent = "";
             vm.uploadFileFinished = false;
             vm.uploadFileSuccess = false;
+            vm.webUrl = "";
         }
 
         function getBase64() {
@@ -421,6 +431,7 @@
 
         function messageHandler(arg) {
             showNotification(arg.message);
+            $scope.$apply();
         }
 
         function eventHandler(arg) {
@@ -445,6 +456,7 @@
                     showNotification("Dialog already opened");
                     break;
             }
+            $scope.$apply();
         }
 
         function messageParent(text) {

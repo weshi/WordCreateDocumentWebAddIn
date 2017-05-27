@@ -30,7 +30,7 @@
     <script src="Scripts/graphHelper.js"></script>
     <script src="Scripts/mainController.js"></script>
     <script src="Scripts/es6-promise.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link href="styles.css" rel="stylesheet" type="text/css" />
     <link href="Home.css" rel="stylesheet" type="text/css" />
 
     <script>
@@ -50,8 +50,10 @@
 
                 $('#sendMail-text').text("Send Mail");
                 $('#sendMail-desc').text("Send mail from your account");
-                $('#uploadFile-text').text("Upload File");
+                $('#uploadFile-text').text("Upload");
                 $('#uploadFile-desc').text("Upload File to your OneDrive folder");
+                $('#openFile-text').text("Open");
+                $('#openFile-desc').text("Open the uploaded file");
                 $('#clearFile-text').text("Clear");
                 $('#clearFile-desc').text("Clear the input");
                 $('#exploreGraph-text').text("Explore Graph");
@@ -119,6 +121,11 @@
                     <span class="ms-Button-label" id="uploadFile-text"></span>
                     <span class="ms-Button-description" id="uploadFile-desc"></span>
                 </button>
+                <button class="ms-Button ms-Button--primary" ng-click="main.openFile()">
+                    <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                    <span class="ms-Button-label" id="openFile-text"></span>
+                    <span class="ms-Button-description" id="openFile-desc"></span>
+                </button>
                 <button class="ms-Button ms-Button--primary" ng-click="main.clearFile()">
                     <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
                     <span class="ms-Button-label" id="clearFile-text"></span>
@@ -126,10 +133,10 @@
                 </button>
 
                 <div ng-show="main.uploadFileSuccess && main.uploadFileFinished">
-                    <p class="ms-font-m ms-fontColor-green">Successfully uploaded file {{ main.myFile }}!</p>
+                    <p class="ms-font-m ms-fontColor-green">Successfully uploaded file {{ main.fileName }}!</p>
                 </div>
                 <div ng-show="!main.uploadFileSuccess && main.uploadFileFinished">
-                    <p class="ms-font-m ms-fontColor-redDark">Something went wrong, couldn't upload file {{ main.myFile }}.</p>
+                    <p class="ms-font-m ms-fontColor-redDark">Something went wrong, couldn't upload file {{ main.fileName }}.</p>
                 </div>
             </div>
 

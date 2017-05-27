@@ -64,7 +64,10 @@
                       oReq.setRequestHeader("Authorization", "Bearer " + auth.access_token);
                       oReq.onload = function () {
                           if (this.status >= 200 && this.status < 300) {
-                              resolve(oReq.response);
+                              resolve({
+                                  status: this.status,
+                                  data: oReq.response
+                              });
                           } else {
                               reject({
                                   status: this.status,
